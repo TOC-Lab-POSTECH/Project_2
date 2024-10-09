@@ -1,57 +1,30 @@
-# build folder
-/Project/build/
+# Project_1
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,cmake
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,cmake
-
-### CMake ###
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
-
-### CMake Patch ###
-# External projects
-*-prefix/
-
-### macOS ###
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-### macOS Patch ###
-# iCloud generated files
-*.icloud
-
-# End of https://www.toptal.com/developers/gitignore/api/macos,cmake
+## How to run(On Mac)
+requirements: [brew](https://brew.sh/)
+1. install(terminal)
+    ```
+   brew install cmake
+   brew install cgal
+   ```
+   
+2. Configure CMakeLists.txt(Refer to CMakeLists.txt at the root folder)
+3. create and move to build folder(on Project folder)
+   ```
+   mkdir build
+   cd build
+   ```
+4. run cmake
+   ```
+   cmake ..
+   ```
+5. run make to create the execution
+   ```
+   make
+   ```
+   
+6. run execution.(named Project1)
+   ```
+   ./Project1
+   ```
+   
