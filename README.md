@@ -1,4 +1,4 @@
-# Project_1
+# Project_2
 
 ## How to run(On Mac)
 requirements: [brew](https://brew.sh/)
