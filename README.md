@@ -1,4 +1,4 @@
-# Project_2
+# Project_2: PAU-VC
 
 ## How to run(On Mac)
 requirements: [brew](https://brew.sh/)
