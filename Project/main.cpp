@@ -5,6 +5,7 @@
 #include <limits>
 
 #include "dummy.h"
+#include "init_test.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::FT FT;
@@ -68,5 +69,7 @@ int main (int, char**)
     std::cerr << "After garbage collection: " <<point_set.number_of_removed_points() << std::endl;
 
     Dummy::test();
+    init_test::INIT_INSTANCE ins;
+    ins.print();
     return 0;
 }
