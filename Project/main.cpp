@@ -1,75 +1,102 @@
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Point_set_3.h>
-
-#include <fstream>
-#include <limits>
+#include <boost/graph/adjacency_list.hpp>
+#include <vector>
+#include <iostream>
+#include <cmath>
 
 #include "dummy.h"
 #include "init_test.h"
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
-typedef Kernel::FT FT;
-typedef Kernel::Point_3 Point;
-typedef Kernel::Vector_3 Vector;
 
-typedef CGAL::Point_set_3<Point> Point_set;
-
-void print_point_set (const Point_set& point_set)
-{
-    std::cerr << "Content of point set:" << std::endl;
-    for (Point_set::const_iterator it = point_set.begin();
-         it != point_set.end(); ++ it)
-        std::cerr << "* Point " << *it
-                  << ": " << point_set.point(*it) // or point_set[it]
-                  << " with normal " << point_set.normal(*it)
-                  << std::endl;
+void print_iter(double* a, int size){
+    int i;
+    for (i=0; i<size; i++){
+        std::cout << a[i]<<" ";
+    }
+    std::cout << std::endl;
 }
 
-int main (int, char**)
-{
-    Point_set point_set;
 
-    // Add points
-    point_set.insert (Point (0., 0., 0.));
-    point_set.insert (Point (0., 0., 1.));
-    point_set.insert (Point (0., 1., 0.));
+int main() {
+    using namespace boost;
 
-    point_set.add_normal_map();
+    // 그래프 자료구조 정의
+    typedef adjacency_list<vecS, vecS, undirectedS> Graph;
 
-    print_point_set(point_set); // Normals have default values
+    // 노드에 해당하는 구간 정의
+    std::vector<double> intervals = {1.6, 2.4, 2.5, 4.8, 5.2}; // [1,2], [2.5,3.5], ...
+    
+    /* 
+    
+    Graph g(intervals.size());
 
-    // Change normal values
-    Point_set::iterator it = point_set.begin();
-    point_set.normal(*(it++)) = Vector (1., 0., 0.);
-    point_set.normal(*(it++)) = Vector (0., 1., 0.);
-    point_set.normal(*(it++)) = Vector (0., 0., 1.);
+    // 간선 추가 (두 구간이 겹치면 간선 생성)
+    for (size_t i = 0; i < intervals.size(); ++i) {
+        for (size_t j = i + 1; j < intervals.size(); ++j) {
+            if (intervals[i] <= intervals[j] + 1.0 && intervals[j] <= intervals[i] + 1.0) {
+                add_edge(i, j, g); // 노드 i와 j를 연결
+            }
+        }
+    }
 
-    // Add point + normal
-    point_set.insert (Point (1., 2., 3.), Vector (4., 5., 6.));
+    // 출력: 간선 정보
+    std::cout << "Edges in the graph:" << std::endl;
+    for (auto [ei, ei_end] = edges(g); ei != ei_end; ++ei) {
+        std::cout << source(*ei, g) << " -- " << target(*ei, g) << std::endl;
+    }
 
-    print_point_set(point_set);
+    */
 
-    // Add new item
-    Point_set::iterator new_item = point_set.insert(Point (7., 8., 9.));
-    point_set.normal(*new_item) = Vector (10., 11., 12.);
+   // m 구하기
+    double leftmost = *(intervals.begin());
+    int m = 1;
+   // std::cout << leftmost << std::endl;
+    for (auto interval : intervals){
+        if (interval > leftmost + 1){
+            leftmost = interval;
+            m++;
+        }
+    }
+ 
+    // Ii의 첫 번째 원소(decomposition[i])와 Ii의 size(count[i]) 구하기 
+    double* decomposition = new double[m];
+    double* count = new double[m];
+    int i = 0;
+    double elem = *(intervals.begin());
+    decomposition[0] = elem;
+    for (auto interval : intervals){
+        std::cout<< interval << " " << elem <<std::endl;
+        if (interval > elem + 1.0){
+            elem = interval;
+            decomposition[++i] = elem;
+            count[i] = 1;
+        }
+        else{
+            count[i]++;
+        }
+    }
 
-    print_point_set(point_set); // New item has default values
+    std::cout << m << std::endl;
 
-    point_set.remove (point_set.begin() + 2,
-                      point_set.begin() + 4);
+    int j;
+    for (j=0; j<m; j++){
+        std::cout << decomposition[j]<<" ";
+    }
+    std::cout << std::endl;
 
-    print_point_set(point_set); // New item has default values
+    for (j=0; j<m; j++){
+        std::cout << count[j]<<" ";
+    }
+    std::cout << std::endl;
 
-    // Display information
-    std::cerr << "Number of removed points: " <<point_set.number_of_removed_points() << std::endl;
+    
 
-    point_set.collect_garbage();
 
-    // Display information (garbage should be gone)
-    std::cerr << "After garbage collection: " <<point_set.number_of_removed_points() << std::endl;
 
-    Dummy::test();
-    init_test::INIT_INSTANCE ins;
-    ins.print();
+    
+
+
+
     return 0;
 }
+
+
