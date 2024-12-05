@@ -12,6 +12,7 @@ public:
     INIT_INSTANCE();
     void print();
 };
+
 }
 
 #endif /* init_test_h */
