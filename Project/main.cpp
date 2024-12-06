@@ -38,7 +38,7 @@ void unit_interval_graph(Graph& g, const std::vector<double>& intervals);
 // vertex의 개수가 n개인 unit interval graph를 uniform distribution random 함수로 edge를 만든다.
 Graph Generate_uniform_unit_interval_graph(int num);
 // vertex의 개수가 n개이고, 각 edge에
-Graph Generate_unit_interval_graph(int num);
+Graph Generate_unit_interval_graph(int num, double alpha);
 
 
 // 주어진 graph의 간선 정보를 출력하는 함수.
@@ -82,9 +82,11 @@ int main() {
     Filename += "_time_log.csv";
     logFile.open(Filename);
     logFile << "vertices num, edges num, graph generation time, solving PAU-VC time, graph generation operations, solving PAU-VC operations" << std::endl;
-    std::vector<int> N = {100,1000,10000,100000,1000000,10000000,100000000};
-    for(auto n: N){
-        int times = 10;
+    std::vector<int> N = {100,1000,10000,100000,1000000,10000000};
+    std::vector<double> alpha = {1.3, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7};
+    int n = 100000;
+    for(auto a: alpha){
+        int times = 100;
         for(int i = 0; i < times; i++){
             //std::vector<double> intervals = generate_interval(n);
             //std::vector<double> intervals = {0, 0.25, 0.5, 0.75, 1.125, 1.375, 1.625, 1.9375, 2.5, 2.78125, 3.84792, 4.34792, 5.09792, 5.72292, 6.78958};
@@ -95,7 +97,7 @@ int main() {
             // Graph g(intervals.size());
             // unit_interval_graph(g, intervals);
 
-            Graph g = Generate_unit_interval_graph(n);
+            Graph g = Generate_unit_interval_graph(n, a);
 
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> elapsed = end - start;
@@ -429,11 +431,10 @@ void unit_interval_graph(Graph& g, const std::vector<double>& intervals){
     return;
 }
 
-// vertex와 
-Graph Generate_unit_interval_graph(int num){
+Graph Generate_unit_interval_graph(int num, double alpha){
     std::random_device rd;
     std::mt19937_64 gen(rd());
-    std::uniform_real_distribution<double> dist(0.0, 1.45);
+    std::uniform_real_distribution<double> dist(0.0, alpha);
 
     std::vector<double> intervals(num);
     Graph g(num);
@@ -775,8 +776,3 @@ void print_vector(const std::vector<int>& vector, const std::string& index_info,
     }
     if(seperator == " ") std::cout << std::endl;
 }
-
-
-
-
-
