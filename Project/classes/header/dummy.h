@@ -9,3 +9,4 @@ public:
     Dummy(int x_, int y_);
     static int test();
 };
+

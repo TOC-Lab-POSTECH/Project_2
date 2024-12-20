@@ -3,9 +3,11 @@ project(Project2)
 
 find_package(CGAL REQUIRED COMPONENTS Core)
 find_package(Eigen3 3.1.0 REQUIRED)
+find_package(Boost REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/classes/header)
 include_directories(${CMAKE_SOURCE_DIR}/classes/source)
+include_directories(${Boost_INCLUDE_DIRS})
 
 file(GLOB_RECURSE SOURCE_FILES
         "${CMAKE_SOURCE_DIR}/classes/source/*.cpp"
@@ -18,6 +20,7 @@ add_executable(Project2 main.cpp ${SOURCE_FILES})
 
 target_include_directories(Project2 PRIVATE ${EIGEN3_INCLUDE_DIR})
 target_include_directories(Project2 PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(Project2 PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(Project2 CGAL::CGAL CGAL::CGAL_Core)
 set(CMAKE_BUILD_TYPE "Release")
